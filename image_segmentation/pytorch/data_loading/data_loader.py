@@ -88,10 +88,10 @@ def get_data_loaders(flags, num_shards):
     num_samples = DATASET_SIZE + (flags.batch_size * flags.ga_steps) - DATASET_SIZE % (flags.batch_size * flags.ga_steps) \
         if DATASET_SIZE % (flags.batch_size * flags.ga_steps) > 0 else DATASET_SIZE
     mllog_event(key='samples_per_epoch', value=num_samples, sync=False)
-    train_sampler = RandomSampler(train_dataset, replacement=True, num_samples=num_samples)
-    # train_sampler = DistributedSampler(train_dataset, seed=flags.seed, drop_last=False) if num_shards > 1 else None
-    # val_sampler = DistributedSampler(val_dataset, seed=flags.seed, drop_last=False) if num_shards > 1 else None
-    val_sampler = None
+    # train_sampler = RandomSampler(train_dataset, replacement=True, num_samples=num_samples)
+    train_sampler = DistributedSampler(train_dataset, seed=flags.seed, drop_last=False) if num_shards > 1 else None
+    val_sampler = DistributedSampler(val_dataset, seed=flags.seed, drop_last=False) if num_shards > 1 else None
+    # val_sampler = None
 
     train_dataloader = DataLoader(train_dataset,
                                   batch_size=flags.batch_size * flags.ga_steps,
