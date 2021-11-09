@@ -75,7 +75,8 @@ def get_data_split(path: str, num_shards: int, shard_id: int):
             imgs_train.append(case_img)
             lbls_train.append(case_lbl)
     # print(f"Found {len(imgs_train)} Training cases, {len(imgs_val)} Validation cases.")
-
+    mllog_event(key='train_samples', value=len(imgs_train), sync=False)
+    mllog_event(key='eval_samples', value=len(imgs_val), sync=False)
     imgs_val, lbls_val = make_val_split_even(imgs_val, lbls_val, num_shards, shard_id)
     return imgs_train, imgs_val, lbls_train, lbls_val
 
@@ -111,8 +112,6 @@ def get_data_loaders(flags, num_shards, global_rank):
         train_data_kwargs = {"patch_size": flags.input_shape, "oversampling": flags.oversampling, "seed": flags.seed}
         train_dataset = PytTrain(x_train, y_train, **train_data_kwargs)
         val_dataset = PytVal(x_val, y_val)
-        mllog_event(key='train_samples', value=len(x_train), sync=False)
-        mllog_event(key='eval_samples', value=len(x_val), sync=False)
     else:
         raise ValueError(f"Loader {flags.loader} unknown. Valid loaders are: synthetic, pytorch")
 
