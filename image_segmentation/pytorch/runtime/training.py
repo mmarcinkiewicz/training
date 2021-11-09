@@ -65,7 +65,6 @@ def train(flags, model, train_loader, val_loader, loss_fn, score_fn, device, cal
 
         if is_distributed:
             train_loader.sampler.set_epoch(epoch)
-            val_loader.sampler.set_epoch(epoch)
 
         loss_value = None
         optimizer.zero_grad()
