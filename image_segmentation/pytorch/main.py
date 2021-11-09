@@ -49,14 +49,11 @@ def main():
     mllog_end(key=constants.INIT_STOP, sync=True)
     mllog_start(key=constants.RUN_START, sync=True)
     train_dataloader, val_dataloader = get_data_loaders(flags, num_shards=world_size, global_rank=local_rank)
-    samples_per_epoch2 = DATASET_SIZE + (flags.batch_size * flags.ga_steps) - DATASET_SIZE % (
-                flags.batch_size * flags.ga_steps) \
-        if DATASET_SIZE % (flags.batch_size * flags.ga_steps) > 0 else DATASET_SIZE
-    samples_per_epoch = DATASET_SIZE - DATASET_SIZE % (world_size * flags.batch_size * flags.ga_steps)
-    print(f"{samples_per_epoch2} {samples_per_epoch}")
+    samples_per_epoch = world_size * len(train_dataloader) * flags.batch_size
     mllog_event(key='samples_per_epoch', value=samples_per_epoch, sync=False)
     flags.evaluate_every = flags.evaluate_every or ceil(20*DATASET_SIZE/samples_per_epoch)
     flags.start_eval_at = flags.start_eval_at or ceil(1000*DATASET_SIZE/samples_per_epoch)
+    print(f"{samples_per_epoch} {flags.evaluate_every} {flags.start_eval_at}")
 
     mllog_event(key=constants.GLOBAL_BATCH_SIZE, value=flags.batch_size * world_size * flags.ga_steps, sync=False)
     mllog_event(key=constants.GRADIENT_ACCUMULATION_STEPS, value=flags.ga_steps)
