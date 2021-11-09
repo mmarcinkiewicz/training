@@ -122,7 +122,7 @@ def get_data_loaders(flags, num_shards, global_rank):
     val_sampler = None
 
     train_dataloader = DataLoader(train_dataset,
-                                  batch_size=flags.batch_size * flags.ga_steps,
+                                  batch_size=flags.batch_size,
                                   shuffle=not flags.benchmark and train_sampler is None,
                                   sampler=train_sampler,
                                   num_workers=flags.num_workers,
