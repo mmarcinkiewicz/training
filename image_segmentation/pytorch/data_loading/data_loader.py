@@ -112,6 +112,7 @@ def get_data_loaders(flags, num_shards, global_rank):
         train_data_kwargs = {"patch_size": flags.input_shape, "oversampling": flags.oversampling, "seed": flags.seed}
         train_dataset = PytTrain(x_train, y_train, **train_data_kwargs)
         val_dataset = PytVal(x_val, y_val)
+        print(f"RANK {global_rank}, num {num_shards}, ids {[int(x.split('_')[-2]) for x in y_val]}")
     else:
         raise ValueError(f"Loader {flags.loader} unknown. Valid loaders are: synthetic, pytorch")
 
