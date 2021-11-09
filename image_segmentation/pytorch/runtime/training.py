@@ -70,31 +70,28 @@ def train(flags, model, train_loader, val_loader, loss_fn, score_fn, device, cal
         optimizer.zero_grad()
         for iteration, batch in enumerate(tqdm(train_loader, disable=(rank != 0) or not flags.verbose)):
             image, label = batch
-            image = image.view(flags.ga_steps, flags.batch_size, 1, *flags.input_shape)
-            label = label.view(flags.ga_steps, flags.batch_size, 1, *flags.input_shape)
+            image, label = image.to(device), label.to(device)
             for callback in callbacks:
                 callback.on_batch_start()
 
-            for curr_image, curr_label in zip(image, label):
-                curr_image, curr_label = curr_image.to(device), curr_label.to(device)
-
-                with autocast(enabled=flags.amp):
-                    output = model(curr_image)
-                    loss_value = loss_fn(output, curr_label)
-                    loss_value /= flags.ga_steps
-
-                if flags.amp:
-                    scaler.scale(loss_value).backward()
-                else:
-                    loss_value.backward()
+            with autocast(enabled=flags.amp):
+                output = model(image)
+                loss_value = loss_fn(output, label)
+                loss_value /= flags.ga_steps
 
             if flags.amp:
-                scaler.step(optimizer)
-                scaler.update()
+                scaler.scale(loss_value).backward()
             else:
-                optimizer.step()
+                loss_value.backward()
 
-            optimizer.zero_grad()
+            if (iteration + 1) % flags.ga_steps == 0:
+                if flags.amp:
+                    scaler.step(optimizer)
+                    scaler.update()
+                else:
+                    optimizer.step()
+
+                optimizer.zero_grad()
 
             loss_value = reduce_tensor(loss_value, world_size).detach().cpu().numpy()
             cumulative_loss.append(loss_value)
