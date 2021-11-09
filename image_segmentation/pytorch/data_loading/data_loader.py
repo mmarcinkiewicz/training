@@ -9,7 +9,6 @@ from torch.utils.data.distributed import DistributedSampler
 from data_loading.pytorch_loader import PytVal, PytTrain
 from runtime.logging import mllog_event
 
-DATASET_SIZE = 168
 
 def calculate_work(f):
     arr = np.load(f)
@@ -117,10 +116,7 @@ def get_data_loaders(flags, num_shards, global_rank):
     else:
         raise ValueError(f"Loader {flags.loader} unknown. Valid loaders are: synthetic, pytorch")
 
-    num_samples = DATASET_SIZE + (flags.batch_size * flags.ga_steps) - DATASET_SIZE % (flags.batch_size * flags.ga_steps) \
-        if DATASET_SIZE % (flags.batch_size * flags.ga_steps) > 0 else DATASET_SIZE
-    mllog_event(key='samples_per_epoch', value=num_samples, sync=False)
-    # train_sampler = RandomSampler(train_dataset, replacement=True, num_samples=num_samples)
+    # train_sampler = RandomSampler(train_dataset, replacement=True, num_samples=samples_per_epoch)
     train_sampler = DistributedSampler(train_dataset, seed=flags.seed, drop_last=False) if num_shards > 1 else None
     # val_sampler = DistributedSampler(val_dataset, seed=flags.seed, drop_last=False) if num_shards > 1 else None
     val_sampler = None
@@ -140,4 +136,4 @@ def get_data_loaders(flags, num_shards, global_rank):
                                 pin_memory=True,
                                 drop_last=False)
 
-    return train_dataloader, val_dataloader
+    return train_dataloader, val_dataloader, samples_per_epoch
