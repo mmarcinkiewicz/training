@@ -53,7 +53,6 @@ def main():
     mllog_event(key='samples_per_epoch', value=samples_per_epoch, sync=False)
     flags.evaluate_every = flags.evaluate_every or ceil(20*DATASET_SIZE/samples_per_epoch)
     flags.start_eval_at = flags.start_eval_at or ceil(1000*DATASET_SIZE/samples_per_epoch)
-    print(f"{samples_per_epoch} {flags.evaluate_every} {flags.start_eval_at}")
 
     mllog_event(key=constants.GLOBAL_BATCH_SIZE, value=flags.batch_size * world_size * flags.ga_steps, sync=False)
     mllog_event(key=constants.GRADIENT_ACCUMULATION_STEPS, value=flags.ga_steps)
