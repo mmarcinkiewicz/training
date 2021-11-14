@@ -7,39 +7,8 @@ from torch.utils.data import Dataset, DataLoader, RandomSampler
 from torch.utils.data.distributed import DistributedSampler
 
 from data_loading.pytorch_loader import PytVal, PytTrain
-from runtime.logging import mllog_event
+from runtime.logging import mllog_event, make_val_split_even
 
-
-def calculate_work(f):
-    arr = np.load(f)
-    image_shape = list(arr.shape[1:])
-    return np.prod([image_shape[i] // 64 - 1 + (1 if image_shape[i] % 64 >= 32 else 0) for i in range(3)])
-
-
-def make_val_split_even(x_val, y_val, num_shards, shard_id):
-    from math import ceil
-    from time import time
-    from multiprocessing import Pool
-    t0 = time()
-    p = Pool(processes=8)
-    work = np.array(p.map(calculate_work, y_val))
-    x_res = [[] for _ in range(num_shards)]
-    y_res = [[] for _ in range(num_shards)]
-    curr_work_per_shard = np.zeros(shape=num_shards)
-
-    x_val, y_val = np.array(x_val), np.array(y_val)
-
-    sort_idx = np.argsort(work)[::-1]
-    work = work[sort_idx]
-    x_val, y_val = x_val[sort_idx], y_val[sort_idx]
-
-    for w_idx, w in enumerate(work):
-        idx = np.argmin(curr_work_per_shard)
-        curr_work_per_shard[idx] += w
-        x_res[idx].append(x_val[w_idx])
-        y_res[idx].append(y_val[w_idx])
-
-    return x_res[shard_id], y_res[shard_id]
 
 def list_files_with_pattern(path, files_pattern):
     data = sorted(glob.glob(os.path.join(path, files_pattern)))
@@ -74,7 +43,6 @@ def get_data_split(path: str, num_shards: int, shard_id: int):
         else:
             imgs_train.append(case_img)
             lbls_train.append(case_lbl)
-    # print(f"Found {len(imgs_train)} Training cases, {len(imgs_val)} Validation cases.")
     mllog_event(key='train_samples', value=len(imgs_train), sync=False)
     mllog_event(key='eval_samples', value=len(imgs_val), sync=False)
     imgs_val, lbls_val = make_val_split_even(imgs_val, lbls_val, num_shards, shard_id)
@@ -115,9 +83,7 @@ def get_data_loaders(flags, num_shards, global_rank):
     else:
         raise ValueError(f"Loader {flags.loader} unknown. Valid loaders are: synthetic, pytorch")
 
-    # train_sampler = RandomSampler(train_dataset, replacement=True, num_samples=samples_per_epoch)
     train_sampler = DistributedSampler(train_dataset, seed=flags.seed, drop_last=True) if num_shards > 1 else None
-    # val_sampler = DistributedSampler(val_dataset, seed=flags.seed, drop_last=False) if num_shards > 1 else None
     val_sampler = None
 
     train_dataloader = DataLoader(train_dataset,
