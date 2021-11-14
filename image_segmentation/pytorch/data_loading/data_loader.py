@@ -7,7 +7,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.distributed import DistributedSampler
 
 from data_loading.pytorch_loader import PytVal, PytTrain
-from runtime.logging import mllog_event, make_val_split_even
+from runtime.logging import mllog_event
 
 
 def list_files_with_pattern(path, files_pattern):
@@ -51,7 +51,7 @@ def get_data_split(path: str, num_shards: int, shard_id: int):
             lbls_train.append(case_lbl)
     mllog_event(key='train_samples', value=len(imgs_train), sync=False)
     mllog_event(key='eval_samples', value=len(imgs_val), sync=False)
-    imgs_val, lbls_val = make_val_split_even(imgs_val, lbls_val, num_shards, shard_id) # TODO remove it -> split_eval_data()
+    imgs_val, lbls_val = split_eval_data(imgs_val, lbls_val, num_shards, shard_id)
     return imgs_train, imgs_val, lbls_train, lbls_val
 
 
