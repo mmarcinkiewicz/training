@@ -123,6 +123,7 @@ def train(flags, model, train_loader, val_loader, loss_fn, score_fn, device, cal
             if eval_metrics["mean_dice"] >= flags.quality_threshold:
                 is_successful = True
             elif eval_metrics["mean_dice"] < 1e-6:
+                print("MODEL DIVERGED. ABORTING.")
                 diverged = True
 
         mllog_end(key=CONSTANTS.BLOCK_STOP, sync=False,
