@@ -103,8 +103,9 @@ def log_env_info():
     env_info = torch.utils.collect_env.get_pretty_env_info()
     print(f'{env_info}')
 
-
+from multiprocessing import Pool
 import numpy as np
+
 def calculate_work(f):
     arr = np.load(f)
     image_shape = list(arr.shape[1:])
@@ -112,10 +113,6 @@ def calculate_work(f):
 
 
 def make_val_split_even(x_val, y_val, num_shards, shard_id):
-    from math import ceil
-    from time import time
-    from multiprocessing import Pool
-    t0 = time()
     p = Pool(processes=8)
     work = np.array(p.map(calculate_work, y_val))
     x_res = [[] for _ in range(num_shards)]

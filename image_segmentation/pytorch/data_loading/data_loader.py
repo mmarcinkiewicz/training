@@ -3,7 +3,7 @@ import glob
 
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader, RandomSampler
+from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.distributed import DistributedSampler
 
 from data_loading.pytorch_loader import PytVal, PytTrain
@@ -28,6 +28,12 @@ def get_split(data, train_idx, val_idx):
     return train, val
 
 
+def split_eval_data(x_val, y_val, num_shards, shard_id):
+    x = [a.tolist() for a in np.array_split(x_val, num_shards)]
+    y = [a.tolist() for a in np.array_split(y_val, num_shards)]
+    return x[shard_id], y[shard_id]
+
+
 def get_data_split(path: str, num_shards: int, shard_id: int):
     with open("evaluation_cases.txt", "r") as f:
         val_cases_list = f.readlines()
@@ -45,7 +51,7 @@ def get_data_split(path: str, num_shards: int, shard_id: int):
             lbls_train.append(case_lbl)
     mllog_event(key='train_samples', value=len(imgs_train), sync=False)
     mllog_event(key='eval_samples', value=len(imgs_val), sync=False)
-    imgs_val, lbls_val = make_val_split_even(imgs_val, lbls_val, num_shards, shard_id) # TODO remove it
+    imgs_val, lbls_val = make_val_split_even(imgs_val, lbls_val, num_shards, shard_id) # TODO remove it -> split_eval_data()
     return imgs_train, imgs_val, lbls_train, lbls_val
 
 
