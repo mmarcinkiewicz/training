@@ -50,7 +50,8 @@ def train(flags, model, train_loader, val_loader, loss_fn, score_fn, device, cal
                                                           device_ids=[flags.local_rank],
                                                           output_device=flags.local_rank)
 
-    stop_training = False
+    is_successful = False
+    diverged = False
     next_eval_at = flags.start_eval_at
     model.train()
     for callback in callbacks:
@@ -120,15 +121,17 @@ def train(flags, model, train_loader, val_loader, loss_fn, score_fn, device, cal
                 callback.on_epoch_end(epoch=epoch, metrics=eval_metrics, model=model, optimizer=optimizer)
             model.train()
             if eval_metrics["mean_dice"] >= flags.quality_threshold:
-                stop_training = True
+                is_successful = True
+            elif eval_metrics["mean_dice"] < 1e-6:
+                diverged = True
 
         mllog_end(key=CONSTANTS.BLOCK_STOP, sync=False,
                   metadata={CONSTANTS.FIRST_EPOCH_NUM: epoch, CONSTANTS.EPOCH_COUNT: 1})
 
-        if stop_training:
+        if is_successful or diverged:
             break
 
     mllog_end(key=CONSTANTS.RUN_STOP, sync=True,
-              metadata={CONSTANTS.STATUS: CONSTANTS.SUCCESS if stop_training else CONSTANTS.ABORTED})
+              metadata={CONSTANTS.STATUS: CONSTANTS.SUCCESS if is_successful else CONSTANTS.ABORTED})
     for callback in callbacks:
         callback.on_fit_end()
