@@ -45,7 +45,7 @@ def get_data_split(path: str, num_shards: int, shard_id: int):
             lbls_train.append(case_lbl)
     mllog_event(key='train_samples', value=len(imgs_train), sync=False)
     mllog_event(key='eval_samples', value=len(imgs_val), sync=False)
-    imgs_val, lbls_val = make_val_split_even(imgs_val, lbls_val, num_shards, shard_id)
+    imgs_val, lbls_val = make_val_split_even(imgs_val, lbls_val, num_shards, shard_id) # TODO remove it
     return imgs_train, imgs_val, lbls_train, lbls_val
 
 
