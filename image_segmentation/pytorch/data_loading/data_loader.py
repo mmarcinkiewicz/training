@@ -91,9 +91,9 @@ def get_data_loaders(flags, num_shards, global_rank):
     elif "dali" in flags.loader:
         x_train, x_val, y_train, y_val = get_data_split(flags.data_dir, num_shards, shard_id=global_rank)
         train_dataloader = get_dali_loader(flags, x_train, y_train,
-                                           mode="train", num_shards=num_shards, device_id=rank, seed=seed)
+                                           mode="train", num_shards=num_shards, device_id=global_rank, seed=flags.seed)
         val_dataloader = get_dali_loader(flags, x_val, y_val,
-                                         mode="validation", num_shards=num_shards, device_id=rank, seed=seed)
+                                         mode="validation", num_shards=num_shards, device_id=global_rank, seed=flags.seed)
         return train_dataloader, val_dataloader
     else:
         raise ValueError(f"Loader {flags.loader} unknown. Valid loaders are: synthetic, pytorch")
