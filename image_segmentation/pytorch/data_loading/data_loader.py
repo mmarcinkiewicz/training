@@ -7,6 +7,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.distributed import DistributedSampler
 
 from data_loading.pytorch_loader import PytVal, PytTrain
+from data_loading.dali_loader import get_dali_loader
 from runtime.logging import mllog_event
 
 
@@ -86,6 +87,14 @@ def get_data_loaders(flags, num_shards, global_rank):
         train_data_kwargs = {"patch_size": flags.input_shape, "oversampling": flags.oversampling, "seed": flags.seed}
         train_dataset = PytTrain(x_train, y_train, **train_data_kwargs)
         val_dataset = PytVal(x_val, y_val)
+
+    elif "dali" in flags.loader:
+        x_train, x_val, y_train, y_val = get_data_split(flags.data_dir, num_shards, shard_id=global_rank)
+        train_dataloader = get_dali_loader(flags, x_train, y_train,
+                                           mode="train", num_shards=num_shards, device_id=rank, seed=seed)
+        val_dataloader = get_dali_loader(flags, x_val, y_val,
+                                         mode="validation", num_shards=num_shards, device_id=rank, seed=seed)
+        return train_dataloader, val_dataloader
     else:
         raise ValueError(f"Loader {flags.loader} unknown. Valid loaders are: synthetic, pytorch")
 
