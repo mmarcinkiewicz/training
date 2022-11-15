@@ -41,7 +41,7 @@ def evaluate(flags, model, loader, loss_fn, score_fn, device, epoch=0, is_distri
                     model=model,
                     overlap=flags.overlap,
                     mode="gaussian",
-                    padding_val=-2.2
+                    padding_val=0.0
                 )
                 eval_loss_value = loss_fn(output, label)
                 scores.append(score_fn(output, label))
@@ -111,7 +111,7 @@ def sliding_window_inference(inputs, labels, roi_shape, model, overlap=0.5, mode
 
     padded_shape = inputs.shape[2:]
     size = [(inputs.shape[2:][i] - roi_shape[i]) // strides[i] + 1 for i in range(dim)]
-    result = torch.zeros(size=(1, 3, *padded_shape), dtype=inputs.dtype, device=inputs.device)
+    result = torch.zeros(size=(1, 4, *padded_shape), dtype=inputs.dtype, device=inputs.device)
     norm_map = torch.zeros_like(result)
     if mode == "constant":
         norm_patch = torch.ones(size=roi_shape, dtype=norm_map.dtype, device=norm_map.device)

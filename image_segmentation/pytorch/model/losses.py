@@ -63,7 +63,7 @@ class Dice:
 def to_one_hot(array, layout, channel_axis):
     if len(array.shape) >= 5:
         array = torch.squeeze(array, dim=channel_axis)
-    array = F.one_hot(array.long(), num_classes=3)
+    array = F.one_hot(array.long(), num_classes=4)
     if layout == "NCDHW":
         array = array.permute(0, 4, 1, 2, 3).float()
     return array
