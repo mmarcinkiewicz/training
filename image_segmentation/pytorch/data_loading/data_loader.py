@@ -42,13 +42,17 @@ def get_data_split(path: str, num_shards: int, shard_id: int):
     lbls = load_data(path, "*_y.npy")
     assert len(imgs) == len(lbls), f"Found {len(imgs)} volumes but {len(lbls)} corresponding masks"
     imgs_train, lbls_train, imgs_val, lbls_val = [], [], [], []
-    for (case_img, case_lbl) in zip(imgs, lbls):
-        if case_img.split("_")[-2] in val_cases_list:
-            imgs_val.append(case_img)
-            lbls_val.append(case_lbl)
-        else:
-            imgs_train.append(case_img)
-            lbls_train.append(case_lbl)
+    # for (case_img, case_lbl) in zip(imgs, lbls):
+    #     if case_img.split("_")[-2] in val_cases_list:
+    #         imgs_val.append(case_img)
+    #         lbls_val.append(case_lbl)
+    #     else:
+    #         imgs_train.append(case_img)
+    #         lbls_train.append(case_lbl)
+    imgs_train = imgs[:int(0.8*len(imgs))]
+    lbls_train = lbls[:int(0.8 * len(imgs))]
+    imgs_val = imgs[int(0.8 * len(imgs)):]
+    lbls_val = lbls[int(0.8 * len(imgs)):]
     mllog_event(key='train_samples', value=len(imgs_train), sync=False)
     mllog_event(key='eval_samples', value=len(imgs_val), sync=False)
     imgs_val, lbls_val = split_eval_data(imgs_val, lbls_val, num_shards, shard_id)
