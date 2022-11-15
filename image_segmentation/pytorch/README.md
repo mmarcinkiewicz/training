@@ -21,15 +21,9 @@ arXiv preprint arXiv:1904.00445 (2019).
 1. Clone the repository.
  
     Create a folder for the project and clone the repository
-    
-    ```bash
-    git clone https://github.com/mmarcinkiewicz/training.git
-    ```
-    or
     ```bash
     git clone https://github.com/mlperf/training.git
     ```
-    once U-Net3D becomes available in the main repository.
 
 2. Build the U-Net3D Docker container.
     
