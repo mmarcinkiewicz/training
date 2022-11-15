@@ -146,7 +146,7 @@ class PytTrain(Dataset):
         return len(self.images)
 
     def __getitem__(self, idx):
-        data = {"image": np.load(self.images[idx]), "label": np.load(self.labels[idx])}
+        data = {"image": np.load(self.images[idx])[:-1], "label": np.load(self.labels[idx])}
         data = self.rand_crop(data)
         data = self.train_transforms(data)
         return data["image"], data["label"]
@@ -160,7 +160,7 @@ class PytVal(Dataset):
         return len(self.images)
 
     def __getitem__(self, idx):
-        return np.load(self.images[idx]), np.load(self.labels[idx])
+        return np.load(self.images[idx])[:-1], np.load(self.labels[idx])
 
 
 
