@@ -34,25 +34,21 @@ def split_eval_data(x_val, y_val, num_shards, shard_id):
     return x[shard_id], y[shard_id]
 
 
-def get_data_split(path: str, num_shards: int, shard_id: int):
-    with open("evaluation_cases.txt", "r") as f:
+def get_data_split(path: str, num_shards: int, shard_id: int, fold: int):
+    with open(f"brats_evaluation_cases_{fold}.txt", "r") as f:
         val_cases_list = f.readlines()
     val_cases_list = [case.rstrip("\n") for case in val_cases_list]
     imgs = load_data(path, "*_x.npy")
     lbls = load_data(path, "*_y.npy")
     assert len(imgs) == len(lbls), f"Found {len(imgs)} volumes but {len(lbls)} corresponding masks"
     imgs_train, lbls_train, imgs_val, lbls_val = [], [], [], []
-    # for (case_img, case_lbl) in zip(imgs, lbls):
-    #     if case_img.split("_")[-2] in val_cases_list:
-    #         imgs_val.append(case_img)
-    #         lbls_val.append(case_lbl)
-    #     else:
-    #         imgs_train.append(case_img)
-    #         lbls_train.append(case_lbl)
-    imgs_train = imgs[:int(0.8*len(imgs))]
-    lbls_train = lbls[:int(0.8 * len(imgs))]
-    imgs_val = imgs[int(0.8 * len(imgs)):]
-    lbls_val = lbls[int(0.8 * len(imgs)):]
+    for (case_img, case_lbl) in zip(imgs, lbls):
+        if case_img.split("_")[-2] in val_cases_list:
+            imgs_val.append(case_img)
+            lbls_val.append(case_lbl)
+        else:
+            imgs_train.append(case_img)
+            lbls_train.append(case_lbl)
     mllog_event(key='train_samples', value=len(imgs_train), sync=False)
     mllog_event(key='eval_samples', value=len(imgs_val), sync=False)
     imgs_val, lbls_val = split_eval_data(imgs_val, lbls_val, num_shards, shard_id)
@@ -86,7 +82,7 @@ def get_data_loaders(flags, num_shards, global_rank):
         val_dataset = SyntheticDataset(scalar=True, shape=flags.val_input_shape, layout=flags.layout)
 
     elif flags.loader == "pytorch":
-        x_train, x_val, y_train, y_val = get_data_split(flags.data_dir, num_shards, shard_id=global_rank)
+        x_train, x_val, y_train, y_val = get_data_split(flags.data_dir, num_shards, global_rank, fold=flags.fold)
         train_data_kwargs = {"patch_size": flags.input_shape, "oversampling": flags.oversampling, "seed": flags.seed}
         train_dataset = PytTrain(x_train, y_train, **train_data_kwargs)
         val_dataset = PytVal(x_val, y_val)
