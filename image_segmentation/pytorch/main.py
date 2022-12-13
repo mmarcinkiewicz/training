@@ -63,7 +63,7 @@ def main():
                          include_background=flags.include_background)
 
     loss_fn = LossBraTS()
-    score_fn = DiceMetric(n_class=4, brats=True)
+    score_fn = DiceMetric(n_class=3, brats=True)
 
     if flags.exec_mode == 'train':
         train(flags, model, train_dataloader, val_dataloader, loss_fn, score_fn,
