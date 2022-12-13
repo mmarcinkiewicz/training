@@ -17,7 +17,7 @@ def get_dllogger(params):
     if is_main_process():
         backends += [StdOutBackend(Verbosity.VERBOSE)]
         if params.log_dir:
-            backends += [JSONStreamBackend(Verbosity.VERBOSE, os.path.join(params.log_dir, "log.json"))]
+            backends += [JSONStreamBackend(Verbosity.VERBOSE, os.path.join(params.log_dir, f"log_{params.fold}.json"))]
     logger.init(backends=backends)
     return logger
 
