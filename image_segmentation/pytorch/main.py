@@ -57,12 +57,12 @@ def main():
 
     mllog_event(key=constants.GLOBAL_BATCH_SIZE, value=flags.batch_size * world_size * flags.ga_steps, sync=False)
     mllog_event(key=constants.GRADIENT_ACCUMULATION_STEPS, value=flags.ga_steps)
-    loss_fn = DiceCELoss(to_onehot_y=True, use_softmax=True, layout=flags.layout,
-                         include_background=flags.include_background)
+    # loss_fn = DiceCELoss(to_onehot_y=True, use_softmax=True, layout=flags.layout,
+    #                      include_background=flags.include_background)
     # score_fn = DiceScore(to_onehot_y=True, use_argmax=True, layout=flags.layout,
     #                      include_background=flags.include_background)
 
-    # loss_fn = LossBraTS()
+    loss_fn = LossBraTS()
     score_fn = DiceMetric(n_class=3, brats=True)
 
     if flags.exec_mode == 'train':
