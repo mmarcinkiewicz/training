@@ -92,7 +92,7 @@ class DiceScore:
         return torch.mean(self.dice(y_pred, y_true), dim=0)
 
 
-from monai.losses import DiceCELoss, DiceLoss
+from monai.losses import DiceLoss
 class LossBraTS(nn.Module):
     def __init__(self):
         super(LossBraTS, self).__init__()
