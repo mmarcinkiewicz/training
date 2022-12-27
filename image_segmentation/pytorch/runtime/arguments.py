@@ -12,6 +12,7 @@ PARSER.add_argument("--local_rank", default=os.environ.get("LOCAL_RANK", 0), typ
 
 PARSER.add_argument('--epochs', dest='epochs', type=int, default=1)
 PARSER.add_argument('--fold', dest='fold', type=int, default=0)
+PARSER.add_argument('--runid', dest='runid', type=int, default=0)
 PARSER.add_argument('--quality_threshold', dest='quality_threshold', type=float, default=0.908)
 PARSER.add_argument('--ga_steps', dest='ga_steps', type=int, default=1)
 PARSER.add_argument('--warmup_steps', dest='warmup_steps', type=int, default=4)
