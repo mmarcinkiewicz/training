@@ -13,10 +13,10 @@
 # limitations under the License.
 
 TODAY_DATE="$(date +'%y%m%d')"
-SUFFIX="gbs1152"
+SUFFIX="gbs896"
 EXP_DIR="${TODAY_DATE}/${SUFFIX}"
 
-export TAG="20250617"
+export TAG="20250619"
 
 # SSH: username that connects to the remote cluster
 export USER="michalm"
@@ -27,9 +27,9 @@ export ACCOUNT="coreai_mlperf_training"
 # Slurm: partition for job submission
 export PARTITION="batch"
 # Slurm: job time limit, defaults to 4 hours
-export TIME="04:00:00"
+export TIME="01:00:00"
 # Slurm: --nodes arguments, default to use 288 nodes
-export NNODES=144
+export NNODES=8
 # Slurm: --gpus_per_node and --ntasks_per_node argument, defaults to 8 GPUs per node
 export GPUS_PER_NODE=8
 # Slurm: max job retries for transient job failures, defaults to retry 3 times
@@ -65,7 +65,7 @@ export MODEL_CKPT="/lustre/fsw/portfolios/coreai/projects/coreai_mlperf_training
 #     Notice that this path must be able to hold at least 5.2TB data since each checkpoint is 5.2TB. 
 export CONTINUAL_CKPT="/lustre/fsw/portfolios/coreai/users/yunzhoul/llm-reference/reference_working_directory/checkpoints"
 # Model: Whether we want to restore from MODEL_CKPT path. If 0, then we are not restoring. 
-export USE_CKPT=1
+export USE_CKPT=0
 # Model: Whether we are resuming from a NeMo-formatted HuggingFace checkpoint (weights only). 
 #     If set to 1, then checkpoint resuming code will not try to load the optimizer states. 
 export FROM_HF=1
@@ -75,9 +75,9 @@ export SAVE_CKPT=0
 
 # Training Configs: 
 # Model: size, to choose from 8b, 70b, 405b
-export SIZE="405b"
+export SIZE="8b"
 # Dataloader: Global batch size
-export GBS=1152
+export GBS=896
 # Dataloader: Micro batch size
 export MBS=1
 # Dataloader: Max run N batches, optional
