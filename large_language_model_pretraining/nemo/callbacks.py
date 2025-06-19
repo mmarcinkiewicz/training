@@ -201,9 +201,16 @@ class MLPerfCallback(pl.Callback):
         return super().on_train_end(trainer, pl_module)
     
     @rank_zero_only
-    def on_validation_start(self, trainer, pl_module):
+    def log_eval_start(self, trainer, pl_module):
         mllogger.end(key=constants.BLOCK_STOP, metadata={constants.SAMPLES_COUNT: self.consumed_samples(trainer)})
         mllogger.start(key=constants.EVAL_START, metadata={constants.SAMPLES_COUNT: self.consumed_samples(trainer)})
+
+    def on_validation_start(self, trainer, pl_module):
+        print("changing eval freq")
+        trainer.val_check_interval = 20
+        trainer.val_check_batch = 20
+        self.log_eval_start(trainer, pl_module)
+
         return super().on_validation_start(trainer, pl_module)
 
     def on_validation_end(self, trainer, pl_module):

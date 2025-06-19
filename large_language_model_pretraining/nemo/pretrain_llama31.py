@@ -25,6 +25,8 @@ from nemo.lightning.run import plugins
 from nemo.collections.llm.gpt.data import build_pretraining_datamodule
 from callbacks import PreemptiveStop, MLPerfCallback, MetricsLogger
 
+print("USING LOCAL COPY")
+
 def slurm_executor(
     user: str,
     host: str,
