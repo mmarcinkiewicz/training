@@ -57,7 +57,7 @@ def slurm_executor(
         "NCCL_NVLS_ENABLE": "0",
         "NVTE_DP_AMAX_REDUCE_INTERVAL": "0",
         "NVTE_ASYNC_AMAX_REDUCTION": "1",
-        "NVTE_FUSED_ATTN": "0",
+        "NVTE_FUSED_ATTN": "1",
         "TOKENIZERS_PARALLELISM": "false",
     }
     if custom_env_vars:
@@ -146,7 +146,7 @@ def get_pretrain(
             overlap_param_gather=True,
         )
 
-        pretrain.trainer.strategy.virtual_pipeline_model_parallel_size = 7
+        #pretrain.trainer.strategy.virtual_pipeline_model_parallel_size = 7
 
         base_lr = 8e-5
         warmup_tokens = 8000 * base_gbs * 8192
@@ -160,6 +160,14 @@ def get_pretrain(
             warmup_steps = math.ceil(warmup_tokens / 8192 / gbs),
             min_lr = 8e-7
         )
+
+        # asymPP
+        pretrain.trainer.strategy.virtual_pipeline_model_parallel_size = None
+        pretrain.trainer.strategy.pipeline_model_parallel_size = 8
+        pretrain.trainer.strategy.account_for_embedding_in_pipeline_split = True
+        pretrain.trainer.strategy.account_for_loss_in_pipeline_split = True
+        pretrain.trainer.strategy.ckpt_load_strictness = False
+
 
         from nemo.collections.llm.recipes.tp_overlap_configs.userbuffers import (
             userbuffers_bf16_h100_h16384_tp8_cp2_mbs1_seqlen8192,

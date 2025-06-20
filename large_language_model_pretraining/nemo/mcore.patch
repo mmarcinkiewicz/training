@@ -75,16 +75,4 @@ index 2eb7702b..d1f0b9a9 100644
  
      return numpy.concatenate((shuffle_idx_first, shuffle_idx_last))
  
-diff --git a/megatron/core/transformer/moe/moe_utils.py b/megatron/core/transformer/moe/moe_utils.py
-index 0c1504d4..71d29629 100644
---- a/megatron/core/transformer/moe/moe_utils.py
-+++ b/megatron/core/transformer/moe/moe_utils.py
-@@ -264,6 +264,7 @@ def topk_softmax_with_capacity(
-         # Pre softmax
-         scores = torch.softmax(logits, dim=-1, dtype=torch.float32).type_as(logits)
-         probs, top_indices = torch.topk(scores, k=topk, dim=1)
-+        probs /= probs.sum(dim=-1, keepdim=True)
-     else:
-         # Post softmax
-         if topk == 1:
 

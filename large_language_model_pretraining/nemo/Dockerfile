@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG NEMO_BASE_IMAGE=nvcr.io/nvidia/nemo:24.12-rc0
+ARG NEMO_BASE_IMAGE=nvcr.io/nvidia/nemo:25.04
 FROM ${NEMO_BASE_IMAGE} AS nemo-base-image
 
 RUN pip uninstall transformers -y
@@ -20,9 +20,14 @@ RUN pip install transformers==4.47.1 blobfile==3.0.0
 RUN pip install prettytable==3.12.0
 RUN pip install git+https://github.com/mlcommons/logging.git@4.1.0-rc3
 
+RUN apt update
+RUN apt upgrade rsync -y
+
 # setup workspace
 WORKDIR /workspace/llama31
 COPY . .
 
 # Fixes the validation dataset order
 RUN patch --directory=/opt/megatron-lm -p1 < mcore.patch
+
+RUN patch --directory=/usr/local/lib/python3.12/dist-packages -p1 < pytorch_ckpt.patch
