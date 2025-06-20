@@ -18,6 +18,7 @@ EXP_DIR="${TODAY_DATE}/${SUFFIX}"
 
 export TAG="20250620"
 
+
 # SSH: username that connects to the remote cluster
 export USER="michalm"
 # SSH: remote cluster URL
