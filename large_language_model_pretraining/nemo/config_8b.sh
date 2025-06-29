@@ -16,7 +16,7 @@ TODAY_DATE="$(date +'%y%m%d')"
 SUFFIX="gbs1152"
 EXP_DIR="${TODAY_DATE}/${SUFFIX}"
 
-export TAG="20250620"
+export TAG="20250629"
 
 
 # SSH: username that connects to the remote cluster
@@ -38,24 +38,24 @@ export MAX_RETRIES=0
 
 # Folder mapping:
 # Output directory that holds logs, any path that you like. 
-export JOB_DIR="/lustre/fsw/portfolios/coreai/users/michalm/raw-logs/llama31_405b_reference/${EXP_DIR}"
+export JOB_DIR="/lustre/fs1/portfolios/coreai/users/michalm/raw-logs/llama31_405b_reference/${EXP_DIR}"
 # Image / container path, either local cache file or remote URL
-export IMAGE="/lustre/fsw/portfolios/coreai/users/michalm/containers/dl+mlperf+training_references+llama31_405b_${TAG}.sqsh"
+export IMAGE="/lustre/fs1/portfolios/coreai/users/michalm/containers/dl+mlperf+training_references+llama31_405b_${TAG}.sqsh"
 # Dataset: C4 dataset location that contains the dataset after preprocessing
 # This corresponds to the PREPROCESSED_PATH in README section 3's dataset download part
-export PREPROCESSED_PATH="/lustre/fsw/portfolios/coreai/projects/coreai_mlperf_training/data/c4"
+export PREPROCESSED_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4"
 # Dataset: Numpy index working directory, contains shuffled dataset
 # This path must be able to hold >400GB data
-export TMP_NPY_INDEX="/lustre/fsw/portfolios/coreai/users/michalm/llm-refresh-llama31/presistent_npy_index"
+export TMP_NPY_INDEX="/lustre/fs1/portfolios/coreai/users/michalm/llm-refresh-llama31/presistent_npy_index"
 # Dataset: Tokenizer path
 # This corresponds to the TOKENIZER_PATH in README section 3's tokenizer download part
-export TOKENIZER_PATH="/lustre/fsw/portfolios/coreai/projects/coreai_mlperf_training/data/llama31/mixtral-tokenizer"
+export TOKENIZER_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/llama31/mixtral-tokenizer"
 
 # Model: checkpoint and tokenizer path
 #     This is the checkpoint that we want to start with. 
 #     Each checkpoint should be a folder containing two sub-folders: context and weights. 
 #     And we need to pass this folder's path (the folder containing context and weights) here.  
-export MODEL_CKPT="/lustre/fsw/portfolios/coreai/projects/coreai_mlperf_training/data/llama31/nemo-ckpt/405b"
+export MODEL_CKPT="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/llama31/nemo-ckpt/405b"
 # Model: Continual checkpoint directory to write and resume
 #     This is the directory to hold all intermediate checkpoints. 
 #     Once a run is complete and we specify to save checkpoints, 
@@ -64,7 +64,7 @@ export MODEL_CKPT="/lustre/fsw/portfolios/coreai/projects/coreai_mlperf_training
 #     Inside this directory, there should be a `checkpoint` directory that holds context and weights
 #     which is the "actual checkpoint". 
 #     Notice that this path must be able to hold at least 5.2TB data since each checkpoint is 5.2TB. 
-export CONTINUAL_CKPT="/lustre/fsw/portfolios/coreai/users/yunzhoul/llm-reference/reference_working_directory/checkpoints"
+export CONTINUAL_CKPT="/lustre/fs1/portfolios/coreai/users/yunzhoul/llm-reference/reference_working_directory/checkpoints"
 # Model: Whether we want to restore from MODEL_CKPT path. If 0, then we are not restoring. 
 export USE_CKPT=0
 # Model: Whether we are resuming from a NeMo-formatted HuggingFace checkpoint (weights only). 
