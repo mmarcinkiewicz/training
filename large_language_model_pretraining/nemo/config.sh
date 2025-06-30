@@ -16,7 +16,7 @@ TODAY_DATE="$(date +'%y%m%d')"
 SUFFIX="gbs1152"
 EXP_DIR="${TODAY_DATE}/${SUFFIX}"
 
-export TAG="20250617"
+export TAG="20250630"
 
 # SSH: username that connects to the remote cluster
 export USER="michalm"
@@ -29,7 +29,7 @@ export PARTITION="batch"
 # Slurm: job time limit, defaults to 4 hours
 export TIME="04:00:00"
 # Slurm: --nodes arguments, default to use 288 nodes
-export NNODES=144
+export NNODES=288
 # Slurm: --gpus_per_node and --ntasks_per_node argument, defaults to 8 GPUs per node
 export GPUS_PER_NODE=8
 # Slurm: max job retries for transient job failures, defaults to retry 3 times
@@ -84,8 +84,8 @@ export MBS=1
 #     If an empty string is provided (""), then the training will continue until time limit
 #     If we want to save a checkpoint, then this value must be set
 export MAX_STEPS="400"
-export START_EVAL_AT="23040"
-export EVAL_EVERY="11520" # skip 5 first evals
+export START_EVAL_AT="276480"
+export EVAL_EVERY="17280" 
 
 # Experiment: starting steps
 #     This is the starting "offset" step from the checkpoint. 
@@ -101,3 +101,4 @@ export NPAR=1
 #     The training script will discard all excessive seeds, and generate seeds if given seeds < NEXP. 
 #     To preserve randomness, we recommend not to set this value so that each time seeds can be randomly generated. 
 export SEEDS="14932"
+unset SEEDS
