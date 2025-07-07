@@ -15,13 +15,13 @@
 # SSH: username that connects to the remote cluster
 export USER="michalm"
 # SSH: remote cluster URL
-export HOST="login-prenyx02"
+export HOST="cw-dfw-cs-001-login-01.nvidia.com"
 # Slurm: account for job submission 
 export ACCOUNT="coreai_mlperf_training"
 # Slurm: partition for job submission
 export PARTITION="batch"
 # Slurm: job time limit, defaults to 8 hours
-export TIME="00:30:00"
+export TIME="02:00:00"
 # Slurm: --nodes arguments, default to use 288 nodes
 export NNODES=1
 # Slurm: --gpus_per_node and --ntasks_per_node argument, defaults to 8 GPUs per node
@@ -31,21 +31,21 @@ export MAX_RETRIES=1
 
 # Folder mapping:
 # Output directory that holds logs, any path that you like. 
-export JOB_DIR="/lustre/fsw/coreai_mlperf_training/users/michalm/training/results"
+export JOB_DIR="/lustre/fs1/portfolios/coreai/users/michalm/raw-logs/llama31_8b_reference"
 # Image / container path, either local cache file or remote URL
-export IMAGE="gitlab-master.nvidia.com/dl/mlperf/training_references:llama31_8b_20250704"
+export IMAGE="/lustre/fs1/portfolios/coreai/users/michalm/containers/dl+mlperf+training_references+llama31_8b_20250702.sqsh"
 # Dataset: C4 dataset location that contains the dataset after preprocessing
 # export ORIGINAL_C4_PATH="/data/data/C4"
 
 # This corresponds to the PREPROCESSED_PATH in README section 3's dataset download part
-export PREPROCESSED_PATH="/lustre/share/coreai_mlperf_training/data/c4/llama"
-export MERGED_C4_PATH="/lustre/share/coreai_mlperf_training/data/c4/llama"
+export PREPROCESSED_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4/llama/"
+export MERGED_C4_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4/llama/"
 # Dataset: Numpy index working directory, contains shuffled dataset
 # This path must be able to hold >400GB data
-export TMP_NPY_INDEX="/lustre/fsw/coreai_mlperf_training/users/michalm/training/results/npy_indices"
+export TMP_NPY_INDEX="/lustre/fs1/portfolios/coreai/users/michalm/llama31/presistent_npy_index"
 # Dataset: Tokenizer path
 # This corresponds to the TOKENIZER_PATH in README section 3's tokenizer download part
-export TOKENIZER_PATH="/lustre/share/coreai_mlperf_training/data/c4/llama/llama-tokenizer"
+export TOKENIZER_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4/llama/llama-tokenizer"
 # export TOKENIZER_PATH="/data/llama3_405b_ref/tokenizer"
 
 # Model: checkpoint and tokenizer path
@@ -53,7 +53,7 @@ export TOKENIZER_PATH="/lustre/share/coreai_mlperf_training/data/c4/llama/llama-
 #     Each checkpoint should be a folder containing two sub-folders: context and weights. 
 #     And we need to pass this folder's path (the folder containing context and weights) here.  
 #export MODEL_CKPT="/data/llama3_8b/model/Llama-3.1-8B_nemo"
-export MODEL_CKPT="/lustre/share/coreai_mlperf_training/data/llama3.1/checkpoints/8b/"
+export MODEL_CKPT="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/llama31/nemo-ckpt/8b/"
 # Model: Continual checkpoint directory to write and resume
 #     This is the directory to hold all intermediate checkpoints. 
 #     Once a run is complete and we specify to save checkpoints, 
@@ -73,7 +73,7 @@ export SAVE_CKPT=0
 
 # export SRC_PATH="/data/training/Llama-3.1-8B/original/"
 # export DST_PATH="/data/training/Llama-3.1-8B/nemo/"
-export CONT_IMAGE_URL="gitlab-master.nvidia.com/dl/mlperf/training_references:llama31_8b_20250702"
+export CONT_IMAGE_URL="/lustre/fs1/portfolios/coreai/users/michalm/containers/dl+mlperf+training_references+llama31_8b_20250702.sqsh"
 
 
 # Training Configs: 
