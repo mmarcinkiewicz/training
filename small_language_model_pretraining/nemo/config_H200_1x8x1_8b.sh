@@ -21,9 +21,9 @@ export ACCOUNT="coreai_mlperf_training"
 # Slurm: partition for job submission
 export PARTITION="batch"
 # Slurm: job time limit, defaults to 8 hours
-export TIME="02:00:00"
+export TIME="03:00:00"
 # Slurm: --nodes arguments, default to use 288 nodes
-export NNODES=1
+export NNODES=4
 # Slurm: --gpus_per_node and --ntasks_per_node argument, defaults to 8 GPUs per node
 export GPUS_PER_NODE=8
 # Slurm: max job retries for transient job failures, defaults to retry 3 times
@@ -82,11 +82,12 @@ export SIZE="8b"
 # Dataloader: Global batch size
 export GBS=1024
 # Dataloader: Micro batch size
-export MBS=2
+export MBS=1
 # Dataloader: Max run N batches, optional
 #     If an empty string is provided (""), then the training will continue until time limit
 #     If we want to save a checkpoint, then this value must be set
-export MAX_STEPS=256
+export MAX_STEPS=100
+export WARMUP_STEPS=10
 
 # Experiment: starting steps
 #     This is the starting "offset" step from the checkpoint. 

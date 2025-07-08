@@ -136,6 +136,8 @@ def slurm_executor(
             host=host,
             job_dir=remote_job_dir,
         ),
+        exclusive=True,
+        gres="gpu:8",
         nodes=nodes,
         ntasks_per_node=devices,
         mem="0",
@@ -180,7 +182,7 @@ def get_pretrain(
         llama31_config.seq_length = 8192
         pretrain.model.config = llama31_config
 
-        pretrain.trainer.strategy.tensor_model_parallel_size = 1
+        pretrain.trainer.strategy.tensor_model_parallel_size = 4
         pretrain.trainer.strategy.pipeline_model_parallel_size = 1
         pretrain.trainer.strategy.virtual_pipeline_model_parallel_size = 1 # set it back to 7?
         pretrain.trainer.strategy.context_parallel_size = 1
@@ -191,7 +193,7 @@ def get_pretrain(
         # pretrain.trainer.max_steps = math.ceil(max_tokens / 8192 / gbs)
 
     
-    base_lr = 8e-5
+    base_lr = 1e-4
     # warmup_tokens = 8000 * base_gbs * 8192
 
     # max_lr = (gbs / base_gbs) * base_lr
@@ -202,8 +204,8 @@ def get_pretrain(
     pretrain.optim = distributed_fused_adam_with_cosine_annealing(
         max_lr = max_lr,
         # warmup_steps = math.ceil(warmup_tokens / 8192 / gbs),
-        warmup_steps = math.ceil (max_steps * 0.1), 
-        min_lr = 8e-7
+        warmup_steps = math.ceil(max_steps * 0.1), 
+        min_lr = base_lr * 0.1
     )
 
     precision = run.Config(
@@ -387,8 +389,6 @@ if __name__ == "__main__":
         partition=args.partition,
         nodes=args.nodes,
         devices=args.gpus_per_node,
-        exclusive=True,
-        gres="gpu:8",
         time = args.time,
         custom_mounts=list(args.mounts.split(",")),
         custom_env_vars=({envvar.split("=")[0]: envvar.split("=")[1] for envvar in args.envvars.split(",")} if args.envvars is not None else None),
