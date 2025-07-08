@@ -286,7 +286,7 @@ def get_data(
         seq_length=seq_length,
         global_batch_size=gbs,
         micro_batch_size=mbs,
-        index_mapping_dir="/data/npy_index",
+        index_mapping_dir="/npy_index",
         seed=seed,
 
         # Option to reset the position IDs in the dataset at an interval.
@@ -387,6 +387,8 @@ if __name__ == "__main__":
         partition=args.partition,
         nodes=args.nodes,
         devices=args.gpus_per_node,
+        exclusive=True,
+        gres="gpu:8",
         time = args.time,
         custom_mounts=list(args.mounts.split(",")),
         custom_env_vars=({envvar.split("=")[0]: envvar.split("=")[1] for envvar in args.envvars.split(",")} if args.envvars is not None else None),
