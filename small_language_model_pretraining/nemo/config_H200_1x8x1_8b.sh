@@ -19,9 +19,9 @@ export HOST="cw-dfw-cs-001-login-01.nvidia.com"
 # Slurm: account for job submission 
 export ACCOUNT="coreai_mlperf_training"
 # Slurm: partition for job submission
-export PARTITION="batch"
+export PARTITION="batch_short"
 # Slurm: job time limit, defaults to 8 hours
-export TIME="03:00:00"
+export TIME="00:30:00"
 # Slurm: --nodes arguments, default to use 288 nodes
 export NNODES=4
 # Slurm: --gpus_per_node and --ntasks_per_node argument, defaults to 8 GPUs per node
@@ -38,14 +38,14 @@ export IMAGE="/lustre/fs1/portfolios/coreai/users/michalm/containers/dl+mlperf+t
 # export ORIGINAL_C4_PATH="/data/data/C4"
 
 # This corresponds to the PREPROCESSED_PATH in README section 3's dataset download part
-export PREPROCESSED_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4/llama/"
-export MERGED_C4_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4/llama/"
+export PREPROCESSED_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4/8b"
+export MERGED_C4_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4/8b/"
 # Dataset: Numpy index working directory, contains shuffled dataset
 # This path must be able to hold >400GB data
 export TMP_NPY_INDEX="/lustre/fs1/portfolios/coreai/users/michalm/llama31/presistent_npy_index"
 # Dataset: Tokenizer path
 # This corresponds to the TOKENIZER_PATH in README section 3's tokenizer download part
-export TOKENIZER_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4/llama/llama-tokenizer"
+export TOKENIZER_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4/8b/tokenizer"
 # export TOKENIZER_PATH="/data/llama3_405b_ref/tokenizer"
 
 # Model: checkpoint and tokenizer path
