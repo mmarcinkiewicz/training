@@ -13,10 +13,10 @@
 # limitations under the License.
 
 TODAY_DATE="$(date +'%y%m%d')"
-SUFFIX="gbs2304"
+SUFFIX="gbs4608"
 EXP_DIR="${TODAY_DATE}/${SUFFIX}"
 
-export TAG="20250714"
+export TAG="20250630"
 
 # SSH: username that connects to the remote cluster
 export USER="michalm"
@@ -77,14 +77,14 @@ export SAVE_CKPT=0
 # Model: size, to choose from 8b, 70b, 405b
 export SIZE="405b"
 # Dataloader: Global batch size
-export GBS=2304
+export GBS=4608
 # Dataloader: Micro batch size
 export MBS=1
 # Dataloader: Max run N batches, optional
 #     If an empty string is provided (""), then the training will continue until time limit
 #     If we want to save a checkpoint, then this value must be set
-export MAX_STEPS="400"
-export START_EVAL_AT="331776"
+export MAX_STEPS=""
+export START_EVAL_AT="368640"
 export EVAL_EVERY="18432" 
 
 # Experiment: starting steps
