@@ -95,3 +95,4 @@ export NPAR=1
 #     The training script will discard all excessive seeds, and generate seeds if given seeds < NEXP. 
 #     To preserve randomness, we recommend not to set this value so that each time seeds can be randomly generated. 
 export SEEDS=""
+
