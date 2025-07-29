@@ -12,20 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TODAY_DATE="$(date +'%y%m%d')"
-SUFFIX="gbs4608"
-EXP_DIR="${TODAY_DATE}/${SUFFIX}"
-
-export TAG="20250630"
-
 # SSH: username that connects to the remote cluster
-export USER="michalm"
+export USER=""
 # SSH: remote cluster URL
-export HOST="cw-dfw-cs-001-login-01.nvidia.com"
+export HOST=""
 # Slurm: account for job submission 
-export ACCOUNT="coreai_mlperf_training"
+export ACCOUNT=""
 # Slurm: partition for job submission
-export PARTITION="batch"
+export PARTITION=""
 # Slurm: job time limit, defaults to 4 hours
 export TIME="04:00:00"
 # Slurm: --nodes arguments, default to use 288 nodes
@@ -33,28 +27,28 @@ export NNODES=288
 # Slurm: --gpus_per_node and --ntasks_per_node argument, defaults to 8 GPUs per node
 export GPUS_PER_NODE=8
 # Slurm: max job retries for transient job failures, defaults to retry 3 times
-export MAX_RETRIES=0
+export MAX_RETRIES=3
 
 # Folder mapping:
 # Output directory that holds logs, any path that you like. 
-export JOB_DIR="/lustre/fs1/portfolios/coreai/users/michalm/raw-logs/llama31_405b_reference/${EXP_DIR}"
+export JOB_DIR=""
 # Image / container path, either local cache file or remote URL
-export IMAGE="/lustre/fs1/portfolios/coreai/users/michalm/containers/dl+mlperf+training_references+llama31_405b_${TAG}.sqsh"
+export IMAGE=""
 # Dataset: C4 dataset location that contains the dataset after preprocessing
 # This corresponds to the PREPROCESSED_PATH in README section 3's dataset download part
-export PREPROCESSED_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/c4"
+export PREPROCESSED_PATH=""
 # Dataset: Numpy index working directory, contains shuffled dataset
 # This path must be able to hold >400GB data
-export TMP_NPY_INDEX="/lustre/fs1/portfolios/coreai/users/michalm/llm-refresh-llama31/presistent_npy_index"
+export TMP_NPY_INDEX=""
 # Dataset: Tokenizer path
 # This corresponds to the TOKENIZER_PATH in README section 3's tokenizer download part
-export TOKENIZER_PATH="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/llama31/mixtral-tokenizer"
+export TOKENIZER_PATH=""
 
 # Model: checkpoint and tokenizer path
 #     This is the checkpoint that we want to start with. 
 #     Each checkpoint should be a folder containing two sub-folders: context and weights. 
 #     And we need to pass this folder's path (the folder containing context and weights) here.  
-export MODEL_CKPT="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training/data/llama31/nemo-ckpt/405b"
+export MODEL_CKPT=""
 # Model: Continual checkpoint directory to write and resume
 #     This is the directory to hold all intermediate checkpoints. 
 #     Once a run is complete and we specify to save checkpoints, 
@@ -63,9 +57,9 @@ export MODEL_CKPT="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training
 #     Inside this directory, there should be a `checkpoint` directory that holds context and weights
 #     which is the "actual checkpoint". 
 #     Notice that this path must be able to hold at least 5.2TB data since each checkpoint is 5.2TB. 
-export CONTINUAL_CKPT="/lustre/fs1/portfolios/coreai/users/yunzhoul/llm-reference/reference_working_directory/checkpoints"
+export CONTINUAL_CKPT=""
 # Model: Whether we want to restore from MODEL_CKPT path. If 0, then we are not restoring. 
-export USE_CKPT=1
+export USE_CKPT=0
 # Model: Whether we are resuming from a NeMo-formatted HuggingFace checkpoint (weights only). 
 #     If set to 1, then checkpoint resuming code will not try to load the optimizer states. 
 export FROM_HF=1
@@ -77,7 +71,7 @@ export SAVE_CKPT=0
 # Model: size, to choose from 8b, 70b, 405b
 export SIZE="405b"
 # Dataloader: Global batch size
-export GBS=4608
+export GBS=1152
 # Dataloader: Micro batch size
 export MBS=1
 # Dataloader: Max run N batches, optional
@@ -85,7 +79,7 @@ export MBS=1
 #     If we want to save a checkpoint, then this value must be set
 export MAX_STEPS=""
 export START_EVAL_AT="368640"
-export EVAL_EVERY="18432" 
+export EVAL_EVERY="18432"
 
 # Experiment: starting steps
 #     This is the starting "offset" step from the checkpoint. 
@@ -100,5 +94,4 @@ export NPAR=1
 # Experiment manager: provides seeds to the launched experiments, use space as delimiter, such as "1234 1235 1236"
 #     The training script will discard all excessive seeds, and generate seeds if given seeds < NEXP. 
 #     To preserve randomness, we recommend not to set this value so that each time seeds can be randomly generated. 
-export SEEDS="14932"
-unset SEEDS
+export SEEDS=""
