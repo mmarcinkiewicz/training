@@ -13,10 +13,11 @@
 # limitations under the License.
 
 TODAY_DATE="$(date +'%y%m%d')"
-SUFFIX="gbs4608"
+SUFFIX="gbs1152"
 EXP_DIR="${TODAY_DATE}/${SUFFIX}"
 
-export TAG="20250630"
+export TAG="20250629"
+
 
 # SSH: username that connects to the remote cluster
 export USER="michalm"
@@ -27,9 +28,9 @@ export ACCOUNT="coreai_mlperf_training"
 # Slurm: partition for job submission
 export PARTITION="batch"
 # Slurm: job time limit, defaults to 4 hours
-export TIME="04:00:00"
+export TIME="01:00:00"
 # Slurm: --nodes arguments, default to use 288 nodes
-export NNODES=288
+export NNODES=8
 # Slurm: --gpus_per_node and --ntasks_per_node argument, defaults to 8 GPUs per node
 export GPUS_PER_NODE=8
 # Slurm: max job retries for transient job failures, defaults to retry 3 times
@@ -65,7 +66,7 @@ export MODEL_CKPT="/lustre/fs1/portfolios/coreai/projects/coreai_mlperf_training
 #     Notice that this path must be able to hold at least 5.2TB data since each checkpoint is 5.2TB. 
 export CONTINUAL_CKPT="/lustre/fs1/portfolios/coreai/users/yunzhoul/llm-reference/reference_working_directory/checkpoints"
 # Model: Whether we want to restore from MODEL_CKPT path. If 0, then we are not restoring. 
-export USE_CKPT=1
+export USE_CKPT=0
 # Model: Whether we are resuming from a NeMo-formatted HuggingFace checkpoint (weights only). 
 #     If set to 1, then checkpoint resuming code will not try to load the optimizer states. 
 export FROM_HF=1
@@ -75,17 +76,17 @@ export SAVE_CKPT=0
 
 # Training Configs: 
 # Model: size, to choose from 8b, 70b, 405b
-export SIZE="405b"
+export SIZE="8b"
 # Dataloader: Global batch size
-export GBS=4608
+export GBS=1152
 # Dataloader: Micro batch size
 export MBS=1
 # Dataloader: Max run N batches, optional
 #     If an empty string is provided (""), then the training will continue until time limit
 #     If we want to save a checkpoint, then this value must be set
-export MAX_STEPS=""
-export START_EVAL_AT="368640"
-export EVAL_EVERY="18432" 
+export MAX_STEPS="400"
+export EVAL_EVERY="11520" # skip 5 first evals
+export START_EVAL_AT="23040"
 
 # Experiment: starting steps
 #     This is the starting "offset" step from the checkpoint. 
@@ -101,4 +102,3 @@ export NPAR=1
 #     The training script will discard all excessive seeds, and generate seeds if given seeds < NEXP. 
 #     To preserve randomness, we recommend not to set this value so that each time seeds can be randomly generated. 
 export SEEDS="14932"
-unset SEEDS
