@@ -19,7 +19,7 @@
 # DEALINGS IN THE SOFTWARE.
 
 
-ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:25.04-py3
+ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:25.05-py3
 FROM ${FROM_IMAGE_NAME}
 
 # Document build setup

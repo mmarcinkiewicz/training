@@ -163,11 +163,11 @@ def get_pretrain(
         pipeline_dtype=torch.bfloat16,
         autocast_enabled=True,
         grad_reduce_in_fp32=False,
-        fp8="hybrid",
-        fp8_amax_history_len=4,
-        fp8_amax_compute_algo='most_recent',
-        fp8_params=True,
-        fp8_dot_product_attention=False,
+        #fp8="hybrid",
+        #fp8_amax_history_len=4,
+        #fp8_amax_compute_algo='most_recent',
+        #fp8_params=True,
+        #fp8_dot_product_attention=False,
     )
 
     pretrain.trainer.plugins = precision

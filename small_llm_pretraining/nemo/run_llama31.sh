@@ -114,11 +114,11 @@ if [ ! $TAG = "" ]; then
     CMD_SUFFIX="${CMD_SUFFIX} --tag ${TAG}"
 fi
 
-if [ $REMOTE -gt 0 ]; then
+if [[ $REMOTE -gt 0 ]]; then
     CMD_SUFFIX="${CMD_SUFFIX} --run_slurm"
 fi
 
-if [ $TENSOR_PARALLEL_SIZE -gt 0 ]; then
+if [[ $TENSOR_PARALLEL_SIZE -gt 0 ]]; then
     CMD_SUFFIX="${CMD_SUFFIX} --tensor_parallel_size ${TENSOR_PARALLEL_SIZE}"
 fi
 
