@@ -52,7 +52,7 @@ export CONTINUAL_CKPT="/tmp"
 export USE_CKPT=0
 # Model: Whether we are resuming from a NeMo-formatted HuggingFace checkpoint (weights only). 
 #     If set to 1, then checkpoint resuming code will not try to load the optimizer states. 
-export FROM_HF=1
+export FROM_HF=0
 # Model: Whether we want to save a checkpoint. Must be 1 if NPAR > 1. If 1, then we save a checkpoint at the end.
 export SAVE_CKPT=0
 
@@ -73,6 +73,8 @@ export MBS=1
 #     If we want to save a checkpoint, then this value must be set
 export MAX_STEPS=1200000
 export WARMUP_STEPS=512
+export EVAL_EVERY=12288
+export START_EVAL_AT=0
 
 # Experiment: starting steps
 #     This is the starting "offset" step from the checkpoint. 
