@@ -149,4 +149,5 @@ python3 pretrain_llama31.py \
 --warmup_steps $WARMUP_STEPS \
 --eval_every $EVAL_EVERY \
 --start_eval_at $START_EVAL_AT \
+--run_slurm \
 $CMD_SUFFIX

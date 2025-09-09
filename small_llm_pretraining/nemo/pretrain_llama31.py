@@ -102,7 +102,6 @@ def slurm_executor(
             job_dir=remote_job_dir,
         ),
         exclusive=True,
-        gres="gpu:8",
         nodes=nodes,
         ntasks_per_node=devices,
         mem="0",
