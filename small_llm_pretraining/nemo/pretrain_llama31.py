@@ -105,7 +105,7 @@ def slurm_executor(
         nodes=nodes,
         ntasks_per_node=devices,
         mem="0",
-        packager=run.GitArchivePackager(subpath="small_language_model_pretraining/nemo", ref="HEAD"),
+        packager=run.GitArchivePackager(subpath="small_llm_pretraining/nemo", ref="HEAD"),
         dependencies=dependencies,
     )
 
@@ -209,7 +209,7 @@ def get_data(
 
     train_datasets = None
 
-    dataset_path = dataset_path = os.getenv("PREPROCESSED_PATH")
+    dataset_path = dataset_path = "/preproc_data"#os.getenv("PREPROCESSED_PATH")
 
     if use_full_dataset:
         train_datasets = sum([["12.5", f"{dataset_path}/c4-train.en_{idx}_text_document"] for idx in range(8)], [])

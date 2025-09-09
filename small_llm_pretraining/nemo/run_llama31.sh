@@ -142,7 +142,7 @@ python3 pretrain_llama31.py \
 --num_exps $NEXP \
 --num_pars $NPAR \
 --continual_ckpt_path $CONTINUAL_CKPT \
---tokenizer_path $TOKENIZER_PATH \
+--tokenizer_path /tokenizer \
 --target_log_ppl $TARGET \
 --step_time_atol $STEP_TIME_ATOL \
 --ckpt_start_step $START_STEPS \
