@@ -37,6 +37,8 @@ RUN git config --global user.name "a" && \
 
 WORKDIR /workspace/
 
+RUN apt update && apt upgrade -y && apt upgrade rsync -y
+
 RUN pip install numcodecs==0.13.1
 
 ## 1. Apex
